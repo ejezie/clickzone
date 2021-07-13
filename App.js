@@ -6,6 +6,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import firebase from "firebase/app";
 import LandingPage from "./component/Auth/Landing";
 import SignUpPage from "./component/Auth/SignUp";
+import LoginPage from "./component/Auth/Login";
 
 
 const firebaseConfig = {
@@ -36,6 +37,11 @@ export default function App() {
         <Stack.Screen
           name="SignUp"
           component={SignUpPage}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Login"
+          component={LoginPage}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>
