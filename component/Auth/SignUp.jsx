@@ -17,7 +17,12 @@ export class SignUp extends Component {
   onSignUp() {
     const { name, email, password } = this.state;
     firebase.auth().createUserWithEmailAndPassword(email, password)
-    .then(res => console.log(res)) 
+    .then((res) => {
+      firebase.firestore().collection("users").doc(firebase.auth().currentUser.uid).set({
+        name,
+        email
+      })
+    }) 
     .catch(err => console.log(err))
   }
   render() {

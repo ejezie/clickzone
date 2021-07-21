@@ -1,13 +1,19 @@
 import { StatusBar } from "expo-status-bar";
-import React from "react";
+import React, { Component } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
+import { Provider } from "react-redux";
+import { createStore, applyMiddleware } from "redux";
+import rootReducer from "./redux/reducers";
+import thunk from "redux-thunk";
 import firebase from "firebase/app";
 import LandingPage from "./component/Auth/Landing";
 import SignUpPage from "./component/Auth/SignUp";
 import LoginPage from "./component/Auth/Login";
+import MainPage from "./component/Main";
 
+const store = createStore(rootReducer, applyMiddleware(thunk));
 
 const firebaseConfig = {
   apiKey: "AIzaSyDkKDLxZ9wcevCk1e5pCI8mvZDJSqX74nU",
@@ -20,31 +26,77 @@ const firebaseConfig = {
 };
 
 if (firebase.apps) {
-  firebase.initializeApp(firebaseConfig)
+  firebase.initializeApp(firebaseConfig);
 }
 
 const Stack = createStackNavigator();
 
-export default function App() {
-  return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="Landing">
-        <Stack.Screen
-          name="Landing"
-          component={LandingPage}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="SignUp"
-          component={SignUpPage}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="Login"
-          component={LoginPage}
-          options={{ headerShown: false }}
-        />
-      </Stack.Navigator>
-    </NavigationContainer>
-  );
+export class App extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      loaded: false,
+      loggedIn: false,
+    };
+  }
+
+  componentDidMount() {
+    firebase.auth().onAuthStateChanged((user) => {
+      if (!user) {
+        this.setState({
+          loggedIn: false,
+          loaded: true,
+        });
+      } else {
+        this.setState({
+          loggedIn: true,
+          loaded: true,
+        });
+      }
+    });
+  }
+
+  render() {
+    const { loggedIn, loaded } = this.state;
+    if (!loaded) {
+      return (
+        <View style={{ flex: 1, justifyContent: "center" }}>
+          <Text>loading...</Text>
+        </View>
+      );
+    }
+    if (!loggedIn) {
+      return (
+        <NavigationContainer>
+          <Stack.Navigator initialRouteName="Landing">
+            <Stack.Screen
+              name="Landing"
+              component={LandingPage}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="SignUp"
+              component={SignUpPage}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="Login"
+              component={LoginPage}
+              options={{ headerShown: false }}
+            />
+          </Stack.Navigator>
+        </NavigationContainer>
+      );
+    }
+    if (loggedIn) {
+      return (
+        <Provider store={store}>
+          <MainPage />
+        </Provider>
+      );
+    }
+  }
 }
+
+export default App;
