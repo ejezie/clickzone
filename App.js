@@ -94,6 +94,9 @@ export class App extends Component {
         <Provider store={store}>
           <MainPage />
         </Provider>
+        // <View>
+        //   in
+        // </View>
       );
     }
   }

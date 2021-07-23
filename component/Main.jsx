@@ -9,6 +9,8 @@ export class Main extends Component {
     this.props.fetchUser();
   }
   render() {
+    const { currentUser } = this.props;
+    console.log(currentUser);
     return (
       <View
         style={{ flex: 1, justifyContent: "center", backgroundColor: "red" }}>
@@ -18,9 +20,9 @@ export class Main extends Component {
   }
 }
 const mapStateToProps = (store) => ({
-  currentUser: store.userState.currentUser
-})
+  currentUser: store.userState.currentUser,
+});
 
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators({ fetchUser }, dispatch);
-export default connect(mapStateToProps, mapDispatchToProps) (Main);
+export default connect(mapStateToProps, mapDispatchToProps)(Main);
