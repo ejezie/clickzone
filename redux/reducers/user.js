@@ -12,5 +12,7 @@ export const user = (state = initialState, action) => {
         ...state,
         currentUser: user,
       };
+    default:
+      return state; // return state which has initial state values
   }
 };

@@ -1,9 +1,9 @@
 import firebase from "firebase";
-import { USER_STATE_CHANGE } from "../constants";
+import { USER_STATE_CHANGE } from "../constants/index";
 
 export function fetchUser() {
   return (dispatch) => {
-    firebase
+      firebase
       .firestore()
       .collection("users")
       .doc(firebase.auth().currentUser.uid)

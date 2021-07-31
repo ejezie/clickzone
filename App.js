@@ -91,9 +91,13 @@ export class App extends Component {
     }
     if (loggedIn) {
       return (
-        <Provider store={store}>
-          <MainPage />
-        </Provider>
+        <NavigationContainer>
+          <Stack.Navigator>
+            <Provider store={store}>
+              <MainPage />
+            </Provider>
+          </Stack.Navigator>
+        </NavigationContainer>
         // <View>
         //   in
         // </View>
