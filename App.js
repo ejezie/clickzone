@@ -12,6 +12,7 @@ import LandingPage from "./component/Auth/Landing";
 import SignUpPage from "./component/Auth/SignUp";
 import LoginPage from "./component/Auth/Login";
 import MainPage from "./component/Main";
+import AddPage from "./component/main/Add";
 
 const store = createStore(rootReducer, applyMiddleware(thunk));
 
@@ -91,13 +92,22 @@ export class App extends Component {
     }
     if (loggedIn) {
       return (
-        <NavigationContainer>
-          <Stack.Navigator>
-            <Provider store={store}>
-              <MainPage />
-            </Provider>
-          </Stack.Navigator>
-        </NavigationContainer>
+        <Provider store={store}>
+          <NavigationContainer>
+            <Stack.Navigator initialRouteName="Main">
+              <Stack.Screen
+                name="Main"
+                component={MainPage}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="Add"
+                component={AddPage}
+                options={{ headerShown: true }}
+              />
+            </Stack.Navigator>
+          </NavigationContainer>
+        </Provider>
         // <View>
         //   in
         // </View>
