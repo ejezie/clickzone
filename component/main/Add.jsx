@@ -1,38 +1,71 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, View, TouchableOpacity, Button, Image } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  Button,
+  Image,
+  Platform,
+} from "react-native";
 import { Camera } from "expo-camera";
+import * as ImagePicker from "expo-image-picker";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 // import { RNCamera as Camera } from "react-native-camera";
 
 export default function App() {
-  const [hasPermission, setHasPermission] = useState(null);
+  const [cameraPermission, setCameraPermission] = useState(null);
+  const [galleryPermission, setGalleryPermission] = useState(null);
   const [type, setType] = useState(Camera.Constants.Type.back);
   const [camera, setCamera] = useState(null);
   const [image, setImage] = useState(null);
 
   useEffect(() => {
     (async () => {
-      const { status } = await Camera.requestPermissionsAsync();
-      setHasPermission(status === "granted");
+      const cameraStatus = await Camera.requestPermissionsAsync();
+      setCameraPermission(cameraStatus.status === "granted");
+ n
+      const galleryStatus =
+        await ImagePicker.requestMediaLibraryPermissionsAsync();
+        setGalleryPermission(galleryStatus.status === "granted")
     })();
   }, []);
 
   const takePicture = async () => {
-    if(camera){
+    if (camera) {
       const data = await camera.takePictureAsync(null);
-      setImage(data.uri); 
+      setImage(data.uri);
     }
-  }
+  };
 
-  if (hasPermission === null) {
+  const pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [1, 1],
+      quality: 1,
+    });
+
+    console.log(result);
+
+    if (!result.cancelled) {
+      setImage(result.uri);
+    }
+  };
+
+  if (cameraPermission === null || galleryPermission===false) {
     return <View />;
   }
-  if (hasPermission === false) {
+  if (cameraPermission === false || galleryPermission===false) {
     return <Text>No access to camera</Text>;
   }
   return (
-    <View >
-      <Camera type={type} style={styles.contain} ref = {ref => setCamera(ref)}>
+    <View type={type} style={styles.CamContain}>
+      <Camera
+        ref={(ref) => setCamera(ref)}
+        type={type}
+        style={styles.fixedRatio}
+        ratio={"1:1"}>
         <View>
           <TouchableOpacity
             onPress={() => {
@@ -42,24 +75,33 @@ export default function App() {
                   : Camera.Constants.Type.back
               );
             }}>
-            <Text> <MaterialCommunityIcons name="camera-switch-outline" color="white" size={26} /> </Text>
+            <Text>
+              {" "}
+              <MaterialCommunityIcons
+                name="camera-switch-outline"
+                color="white"
+                size={26}
+              />{" "}
+            </Text>
           </TouchableOpacity>
         </View>
       </Camera>
-      <Button onPress={() => takePicture()} title="Snap"/>
+      <Button onPress={() => takePicture()} title="Snap" />
+      <Button onPress={() => pickImage()} title="Select From Gallery" />
       {/* <MaterialCommunityIcons name="camera" color="white" size={26} /> */}
-      {image && <Image source={{uri: image}} style={{flex:1, marginBottom:70,}}/>}
+      {image && <Image source={{ uri: image }} style={{ flex: 1 }} />}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  contain: {
-    flex:1,
-    aspectRatio: 1,
-  },
-  fixedRatio:{
+  CamContain: {
     flex: 1,
-    aspectRatio: 1,
-  }
+    // width: 100,
+    // flexDirection: "row",
+  },
+  fixedRatio: {
+    flex: 1,
+    aspectRatio: 1.1,
+  },
 });
