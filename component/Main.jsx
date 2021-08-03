@@ -38,7 +38,7 @@ export class Main extends Component {
           component={ProfilePage}
           options={{
             tabBarIcon: ({ color, size }) => {
-              return <MaterialCommunityIcons name="plus-box" color={color} size={26} />;
+              return <MaterialCommunityIcons name="account-circle" color={color} size={26} />;
             },
           }}
         />
@@ -53,7 +53,7 @@ export class Main extends Component {
           })}
           options={{
             tabBarIcon: ({ color, size }) => {
-              return <MaterialCommunityIcons name="account-circle" color={color} size={26}/>;
+              return <MaterialCommunityIcons name="plus-box" color={color} size={26}/>;
             },
           }}
         />

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, Button, TextInput } from "react-native";
+import { View, Button, TextInput, StyleSheet } from "react-native";
 import firebase from "firebase";
 
 export class SignUp extends Component {
@@ -16,29 +16,35 @@ export class SignUp extends Component {
   }
   onSignUp() {
     const { name, email, password } = this.state;
-    firebase.auth().createUserWithEmailAndPassword(email, password)
-    .then((res) => {
-      firebase.firestore().collection("users").doc(firebase.auth().currentUser.uid).set({
-        name,
-        email
+    firebase
+      .auth()
+      .createUserWithEmailAndPassword(email, password)
+      .then((res) => {
+        firebase
+          .firestore()
+          .collection("users")
+          .doc(firebase.auth().currentUser.uid)
+          .set({
+            name,
+            email,
+          });
       })
-    }) 
-    .catch(err => console.log(err))
+      .catch((err) => console.log(err));
   }
   render() {
     return (
-      <View>
+      <View style={styles.container}>
         <TextInput
           placeholder="Your Name"
-          onChangeText={(name) => this.setState({name})}
+          onChangeText={(name) => this.setState({ name })}
         />
         <TextInput
           placeholder="Your Email"
-          onChangeText={(email) => this.setState({email})}
+          onChangeText={(email) => this.setState({ email })}
         />
         <TextInput
           placeholder="Your Password"
-          onChangeText={(password) => this.setState({password})}
+          onChangeText={(password) => this.setState({ password })}
           secureTextEntry={true}
         />
         <Button title="Register" onPress={this.onSignUp()} />
@@ -46,5 +52,11 @@ export class SignUp extends Component {
     );
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    marginTop: 100,
+  },
+});
 
 export default SignUp;
