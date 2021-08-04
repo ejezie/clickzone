@@ -13,6 +13,7 @@ import SignUpPage from "./component/Auth/SignUp";
 import LoginPage from "./component/Auth/Login";
 import MainPage from "./component/Main";
 import AddPage from "./component/main/Add";
+import SavePage from "./component/main/Save";
 
 const store = createStore(rootReducer, applyMiddleware(thunk));
 
@@ -100,11 +101,8 @@ export class App extends Component {
                 component={MainPage}
                 options={{ headerShown: false }}
               />
-              <Stack.Screen
-                name="Add"
-                component={AddPage}
-                options={{ headerShown: true }}
-              />
+              <Stack.Screen name="Add" component={AddPage} />
+              <Stack.Screen name="Save" component={SavePage} />
             </Stack.Navigator>
           </NavigationContainer>
         </Provider>

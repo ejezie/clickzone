@@ -13,7 +13,7 @@ import * as ImagePicker from "expo-image-picker";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 // import { RNCamera as Camera } from "react-native-camera";
 
-export default function App() {
+export default function Add({navigation}) {
   const [cameraPermission, setCameraPermission] = useState(null);
   const [galleryPermission, setGalleryPermission] = useState(null);
   const [type, setType] = useState(Camera.Constants.Type.back);
@@ -24,10 +24,10 @@ export default function App() {
     (async () => {
       const cameraStatus = await Camera.requestPermissionsAsync();
       setCameraPermission(cameraStatus.status === "granted");
- n
+      n;
       const galleryStatus =
         await ImagePicker.requestMediaLibraryPermissionsAsync();
-        setGalleryPermission(galleryStatus.status === "granted")
+      setGalleryPermission(galleryStatus.status === "granted");
     })();
   }, []);
 
@@ -53,10 +53,10 @@ export default function App() {
     }
   };
 
-  if (cameraPermission === null || galleryPermission===false) {
+  if (cameraPermission === null || galleryPermission === false) {
     return <View />;
   }
-  if (cameraPermission === false || galleryPermission===false) {
+  if (cameraPermission === false || galleryPermission === false) {
     return <Text>No access to camera</Text>;
   }
   return (
@@ -88,6 +88,10 @@ export default function App() {
       </Camera>
       <Button onPress={() => takePicture()} title="Snap" />
       <Button onPress={() => pickImage()} title="Select From Gallery" />
+      <Button
+        onPress={() => navigation.navigate("Save", { image })}
+        title="Save"
+      />
       {/* <MaterialCommunityIcons name="camera" color="white" size={26} /> */}
       {image && <Image source={{ uri: image }} style={{ flex: 1 }} />}
     </View>
