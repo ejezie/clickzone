@@ -13,7 +13,7 @@ import * as ImagePicker from "expo-image-picker";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 // import { RNCamera as Camera } from "react-native-camera";
 
-export default function Add({navigation}) {
+export default function Add({navigation }) {
   const [cameraPermission, setCameraPermission] = useState(null);
   const [galleryPermission, setGalleryPermission] = useState(null);
   const [type, setType] = useState(Camera.Constants.Type.back);
@@ -101,8 +101,6 @@ export default function Add({navigation}) {
 const styles = StyleSheet.create({
   CamContain: {
     flex: 1,
-    // width: 100,
-    // flexDirection: "row",
   },
   fixedRatio: {
     flex: 1,
