@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { View, TextInput, Image, Button } from "react-native";
-import * as firebase from "firebase/app";
-require("firebase/firestore ");
+import firebase from "firebase";
+require("firebase/firestore");
 require("firebase/firebase-storage");
 
 export default function Save(props) {
@@ -33,7 +33,7 @@ export default function Save(props) {
   return (
     <View style={{ flex: 1 }}>
       {/* <Text>Saved</Text> */}
-      <Image source={{ uri: props.route.params.image }} />
+      <Image source={{ uri: props.route.params.image }} style={{ flex: 0.4, height:300,}} />
       <TextInput
         placeholder="write a caption here..."
         onChangeText={(caption) => setCaption(caption)}
@@ -42,3 +42,13 @@ export default function Save(props) {
     </View>
   );
 }
+
+
+// rules_version = '2';
+// service firebase.storage {
+//   match /b/{bucket}/o {
+//     match /{allPaths=**} {
+//       allow read, write: if request.auth != null;
+//     }
+//   }
+// }
